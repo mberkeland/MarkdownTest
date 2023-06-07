@@ -10,6 +10,9 @@ In this blog, we will demonstrate how to build a video conferencing system for m
 2. **The automatic speech recognition (ASR) service can separate individual speakers** in an audio stream so that each speaker's utterances are identified uniquely.
 
 Obtaining these capabilities is seen as crucial to unlocking the full potential of conferencing systems for room systems and hybrid use cases.
+
+![Diarization](https://raw.githubusercontent.com/mberkeland/MarkdownTest/main/diar2.png)
+
 ## Speech recognition with diarization
 Diarization is the process of separating an audio stream into segments according to speaker identity, regardless of channel. 
 
