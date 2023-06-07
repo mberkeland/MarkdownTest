@@ -1,9 +1,10 @@
 # Break Out of Transcription Monotony with Vonage and Deepgram for Multi-speaker Room Systems (DEMO).
 
-Many workers around the world are back in the office, but there’s no drop off in the use of video conferencing systems! Most systems on the market today are designed for one speaker per video stream, making a mess out of the office rooms systems shared by multiple speakers.
+Many workers around the world are back in the office, but there’s no drop off in the use of video conferencing systems! Most systems on the market today are designed for one speaker per video stream, making a mess out of the office rooms systems shared by multiple speakers. Imagine reading a transcript of an exchange between three people, but with no separation of who said what to whom? It can get pretty confusing. When a Conference Room joins a video session, there’s no discreet audio for each individual speaker - making for a confusing transcript especially when the folks in ‘Conference Room A’ are speaking with each other!
 
 Increasingly, conferencing systems are turning to artificial intelligence capabilities to manage this complexity. The latest generation of technologies goes beyond simple captions and translations and employs the power of AI to manage the complexity of room systems as well as hybrid video scenarios.
 
+Knowing who said what to whom is important to making any sense of a conversation and in providing value from meeting notes and transcripts. Separating out who is talking from a single audio source is a task humans have specially adapted for, but is a complex challenge for machines. This process is called **speaker diarization**.
 In this blog, we will demonstrate how to build a video conferencing system for multi-speaker room systems. To implement this solution, we will need to make sure:
 
 1. **The video conferencing system has secure access to raw audio on the server** to ensure fastest processing times, as well as capture from SIP devices for the dial in participants. 
@@ -13,8 +14,8 @@ Obtaining these capabilities is seen as crucial to unlocking the full potential 
 
 ![Diarization](https://raw.githubusercontent.com/mberkeland/MarkdownTest/main/diar2.png)
 
-## Speech recognition with diarization
-Diarization is the process of separating an audio stream into segments according to speaker identity, regardless of channel. 
+## Speech Recognition with Speaker Diarization
+Speaker diarization is the process of separating an audio stream into segments according to speaker identity, regardless of channel. 
 
 Speaker diarization is generally broken down into four major subtasks:
 
@@ -23,10 +24,10 @@ Speaker diarization is generally broken down into four major subtasks:
 3. **Representation** - Use a discriminative vector to represent those segments.
 4. **Attribution** - Add a speaker label to each segment based on its discriminative representation.
 
-There are varying capabilities to the diarization features that different ASR providers offer. Our partner Deepgram has implemented one of the widest sets of features we’ve seen on the market, with over a dozen languages and no caps on the number of active speakers. You can learn more about this solution [here](https://developers.deepgram.com/docs/diarization).
+There are varying capabilities to the diarization features that different ASR providers offer. Our partner Deepgram has implemented one of the most robust feature sets we’ve seen on the market, with over a dozen languages and no caps on the number of active speakers. You can learn more about this solution [here](https://developers.deepgram.com/docs/diarization).
 
 ## Accessing raw audio from live video sessions.
-For the speech recognition to work efficiently, we need access to the raw audio streams directly from the media router. This gives us the benefits of native support for all devices, uses about half the bandwidth of a client-side solution, and can work with firewalled systems. Using Vonage Video API Audio Connector, we can extract raw audio streams from our live video sessions and send them to Deepgram for real-time (as well as offline) processing of audio streams. You can find more information about the Audio Connector [here](https://tokbox.com/developer/guides/audio-connector/)
+For speech recognition to work efficiently, we need access to the raw audio streams directly from the media router. This gives us the benefits of native support for all devices, uses about half the bandwidth of a client-side solution, and can work with firewalled systems. Using Vonage Video API Audio Connector, we can extract raw audio streams from our live video sessions and send them to Deepgram for real-time (as well as offline) processing of audio streams. You can find more information about the Audio Connector [here](https://tokbox.com/developer/guides/audio-connector/)
 
 ## Room System Diarization Demo
 For our demo, we were interested in showing the real-time diarization of a room system. For clarity, we did not include other individuals joining the conference, though this solution absolutely can handle that case (as well as multiple simultaneous room systems).  The Audio Connector gets started up when we add a new Publisher (who, in this case, we know is a Room System).  It’s actually quite simple to set up the Audio Connector in this case, as we already know the StreamID for the publisher (it is sent to us from the front end app).  Although the AudioConnector can handle “all”, or “a list of streams”, in our case we are just using the one stream, associated with the room system. Note that this COULD even be a traditional SIP room conferencing system.
@@ -104,7 +105,7 @@ And if it is, we simply pass the data along, as-is!
 deepgramLive.send(msg);
 ```
 
-Once Deepgram gets enough data to create the caption, it will call us back on the above mentioned “listener”.  Deepgram provides us with a whole lot of information regarding the transcribed audio (I strongly suggest looking through their excellent documentation to get a good feel for the richness of the information provided), but the part we mostly want for our room system diarization is the array of “words”.  Now, Deepgram diarization works on a per-word basis, able to differentiate even when there are overlapping speakers, so we want to look at each WORD and break them out by the individuals. We create an array where each entry will be “what that speaker said”, then iterate through the words, breaking out and re-composing by speaker:
+Once Deepgram gets enough data to create the caption, it will call us back on the above mentioned “listener”.  Deepgram provides us with a whole lot of information regarding the transcribed audio (I strongly suggest looking through their [excellent documentation](https://developers.deepgram.com/documentation/features/diarize/) to get a good feel for the richness of the information provided), but the part we mostly want for our room system diarization is the array of “words”.  Now, Deepgram diarization works on a per-word basis, able to differentiate even when there are overlapping speakers, so we want to look at each WORD and break them out by the individuals. We create an array where each entry will be “what that speaker said”, then iterate through the words, breaking out and re-composing by speaker:
 ```javascript
 let words = transcription.channel.alternatives[0].words
 let message = [];
