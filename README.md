@@ -109,10 +109,10 @@ let message = [];
 
 words.forEach(function each(word) {
 if (word.speaker in message) {
-message[word.speaker] += " " + word.punctuated_word
-} else {
-message[word.speaker] = word.punctuated_word
-}
+    message[word.speaker] += " " + word.punctuated_word
+  } else {
+   message[word.speaker] = word.punctuated_word
+  }
 });
 ```
 We now have “message[0]” with what the first speaker said, “message[1]” with what the second speaker said, etc.
