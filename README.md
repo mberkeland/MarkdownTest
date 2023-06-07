@@ -5,7 +5,8 @@ Many workers around the world are back in the office, but there’s no drop off 
 Increasingly, conferencing systems are turning to artificial intelligence capabilities to manage this complexity. The latest generation of technologies goes beyond simple captions and translations and employs the power of AI to manage the complexity of room systems as well as hybrid video scenarios.
 
 Knowing who said what to whom is important to making any sense of a conversation and in providing value from meeting notes and transcripts. Separating out who is talking from a single audio source is a task humans have specially adapted for, but is a complex challenge for machines. This process is called **speaker diarization**.
-In this blog, we will demonstrate how to build a video conferencing system for multi-speaker room systems. To implement this solution, we will need to make sure:
+
+In this blog, we will demonstrate how to build a video conferencing system for multi-speaker room systems with diarization. To implement this solution, we will need to make sure:
 
 1. **The video conferencing system has secure access to raw audio on the server** to ensure fastest processing times, as well as capture from SIP devices for the dial in participants. 
 2. **The automatic speech recognition (ASR) service can separate individual speakers** in an audio stream so that each speaker's utterances are identified uniquely.
@@ -29,8 +30,12 @@ There are varying capabilities to the diarization features that different ASR pr
 ## Accessing Raw Audio from Live Video Sessions
 For speech recognition to work efficiently, we need access to the raw audio streams directly from the media router. This gives us the benefits of native support for all devices, uses about half the bandwidth of a client-side solution, and can work with firewalled systems. Using Vonage Video API Audio Connector, we can extract raw audio streams from our live video sessions and send them to Deepgram for real-time (as well as offline) processing of audio streams. You can find more information about the Audio Connector [here](https://tokbox.com/developer/guides/audio-connector/)
 
-## Room System Diarization Demo
-For our demo, we were interested in showing the real-time diarization of a room system. For clarity, we did not include other individuals joining the conference, though this solution absolutely can handle that case (as well as multiple simultaneous room systems).  The Audio Connector gets started up when we add a new Publisher (who, in this case, we know is a Room System).  It’s actually quite simple to set up the Audio Connector in this case, as we already know the StreamID for the publisher (it is sent to us from the front end app).  Although the AudioConnector can handle “all”, or “a list of streams”, in our case we are just using the one stream, associated with the room system. Note that this COULD even be a traditional SIP room conferencing system.
+## Building the Room System Diarization Demo
+For our demo, we were interested in showing the real-time diarization of a room system using Vonage Video API to create the video session and Deepgram to transcribe the speech. 
+
+For clarity, we did not include other individuals joining the conference, though this solution absolutely can handle that case (as well as multiple simultaneous room systems).  The Audio Connector gets started up when we add a new Publisher (who, in this case, we know is a Room System).  It’s actually quite simple to set up the Audio Connector in this case, as we already know the StreamID for the publisher (it is sent to us from the front end app).  Although the AudioConnector can handle “all”, or “a list of streams”, in our case we are just using the one stream, associated with the room system. Note that this COULD even be a traditional SIP room conferencing system.
+
+> You will need a Vonage Video API and a Deepgram account to build this demo. You may create your free accounts [here](https://tokbox.com/account/user/signup) for Vonage Video API and [here](https://console.deepgram.com/signup) for Deepgram. 
 
 After creating our Opentok instance (“opentok”) ,  and creating a Session for the video conference (“sessionId”) along with an associated authorization token (“token”), the application informs us of the room system’s stream (“streamId”).  It’s then just a matter of associating that stream with the URL of an awaiting websocket (“url”): 
 ```javascript
@@ -122,3 +127,11 @@ if (word.speaker in message) {
 We now have “message[0]” with what the first speaker said, “message[1]” with what the second speaker said, etc.
 
 And that’s it!  We can send these messages back to the GUI, for it to display as appropriate.
+
+Now you can have a room system that takes meeting notes and handles multiple speakers, even if they are in the same room! 
+
+[Click here](https://vids.vonage.com/Vonage_Deepgram.mp4) to see a video of this demo in action!
+
+You can also request a personal demo from one of our experts here!
+
+
