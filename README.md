@@ -26,7 +26,7 @@ Speaker diarization is generally broken down into four major subtasks:
 
 There are varying capabilities to the diarization features that different ASR providers offer. Our partner Deepgram has implemented one of the most robust feature sets we’ve seen on the market, with over a dozen languages and no caps on the number of active speakers. You can learn more about this solution [here](https://developers.deepgram.com/docs/diarization).
 
-## Accessing raw audio from live video sessions.
+## Accessing Raw Audio from Live Video Sessions
 For speech recognition to work efficiently, we need access to the raw audio streams directly from the media router. This gives us the benefits of native support for all devices, uses about half the bandwidth of a client-side solution, and can work with firewalled systems. Using Vonage Video API Audio Connector, we can extract raw audio streams from our live video sessions and send them to Deepgram for real-time (as well as offline) processing of audio streams. You can find more information about the Audio Connector [here](https://tokbox.com/developer/guides/audio-connector/)
 
 ## Room System Diarization Demo
