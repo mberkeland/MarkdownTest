@@ -133,6 +133,6 @@ Now we have a room system that takes meeting notes and handles multiple speakers
 
 ## Conclusion
 [Click here](https://vids.vonage.com/Vonage_Deepgram.mp4) to see a video of this demo in action!
+You can also [request a personal demo](https://www.vonage.com/communications-apis/contact-api/) from one of our experts. If you have questions or feedback, join us on the [Vonage Developer Slack](https://developer.vonage.com/community/slack) or send us a Tweet on [Twitter.](https://twitter.com/vonagedev)
 
-You can also request a personal demo from one of our experts. If you have questions or feedback, join us on the Vonage Developer Slack or send us a Tweet on Twitter.
 
